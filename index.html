@@ -76,7 +76,7 @@
             color: white;
             border: none;
             border-radius: 5px;
-            touch-action: manipulation; /* Prevents zooming on touch */
+            touch-action: manipulation;
         }
         .control-btn:active {
             background-color: #555;
@@ -87,18 +87,17 @@
     <div class="container">
         <h1>Welcome to My Website</h1>
         <p>This is my first website! Here's some information about it:</p>
-        
+       
         <h2>About Me</h2>
         <p>I Taught myself to code using HTML, JavaScript & CSS and now I have added a Quiz & Snake game.</p>
-        
+       
         <h2>My Interests</h2>
         <ul>
             <li>I Love My Wifey</li>
             <li>To Fish Or Not To Fish</li>
             <li>Lt.Dan Ice-cream</li>
-        </ul>
-        
-        <a href="https://www.w3schools.com/html/html_basic.asp">Learn HTML Here!</a>
+       
+         <a href="https://www.w3schools.com/html/html_basic.asp">Learn HTML Here!</a>
 
         <!-- Quiz Section -->
         <div class="quiz-section">
@@ -180,6 +179,77 @@
             result.textContent = `You got ${score} out of ${totalQuestions} correct!`;
         }
 
+        // Snake Game Script
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gridSize = 20;
+        const tileCount = canvas.width / gridSize;
+        let snake = [{ x: 10, y: 10 }];
+        let food = { x: 15, y: 15 };
+        let dx = 0;
+        let dy = 0;
+        let score = 0;
+        let gameLoop;
+        function drawGame() {
+            // Move snake
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            snake.unshift(head);
+
+            // Check if snake ate food
+            if (head.x === food.x && head.y === food.y) {
+                score += 1;
+                document.getElementById('score').textContent = score;
+                food = {
+                    x: Math.floor(Math.random() * tileCount),
+                    y: Math.floor(Math.random() * tileCount)
+                };
+            } else {
+                snake.pop();
+            }
+
+            // Check collision with walls
+            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+                resetGame();
+                return;
+            }
+
+            // Check collision with self
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    resetGame();
+                    return;
+                }
+            }
+
+            // Clear canvas
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw snake
+            ctx.fillStyle = 'green';
+            snake.forEach(segment => {
+                ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
+            });
+
+            // Draw food
+            ctx.fillStyle = 'red';
+            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+
+            // Continue game loop
+            gameLoop = setTimeout(drawGame, 100);
+        }
+
+        function resetGame() {
+            clearTimeout(gameLoop); // Clear any existing loop
+            snake = [{ x: 10, y: 10 }];
+            dx = 0;
+            dy = 0;
+            score = 0;
+            document.getElementById('score').textContent = score;
+            food = { x: 15, y: 15 };
+            drawGame(); // Restart the game
+        }
+
         // Keyboard controls
         document.addEventListener('keydown', (e) => {
             switch (e.key) {
@@ -216,7 +286,7 @@
             }
         }
 
-        // Start the game
+        // Start the game immediately after the script loads
         drawGame();
     </script>
 </body>
