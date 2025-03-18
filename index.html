@@ -53,6 +53,14 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        .game-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #gameCanvas {
+            border: 1px solid #333;
+            background-color: #000;
+        }
     </style>
 </head>
 <body>
@@ -61,7 +69,7 @@
         <p>This is my first website! Here's some information about it:</p>
        
         <h2>About Me</h2>
-        <p>I Taught myself to code using HTML, JavaScript & CSS.</p>
+        <p>I Taught myself to code using HTML, JavaScript & CSS and now I have added a Quiz & Snake game.</p>
        
         <h2>My Interests</h2>
         <ul>
@@ -71,32 +79,26 @@
         </ul>
        
         <a href="https://www.w3schools.com/html/html_basic.asp">Learn HTML Here!</a>
-
         <!-- Quiz Section -->
         <div class="quiz-section">
             <h2>Romance Quiz</h2>
             <form id="quizForm">
-                <!-- Question 1 -->
                 <div class="question">
                     <p>1. What flower is traditionally associated with love and romance?</p>
                     <div class="options">
-                        <label><input type="radio" name="q1" value="incorrect"> Daffodil</label>
                         <label><input type="radio" name="q1" value="correct"> Rose</label>
+                        <label><input type="radio" name="q1" value="incorrect"> Daffodil</label>
                         <label><input type="radio" name="q1" value="incorrect"> Cactus</label>
                     </div>
                 </div>
-
-                <!-- Question 2 -->
                 <div class="question">
                     <p>2. In what month is Valentine’s Day celebrated?</p>
                     <div class="options">
+                        <label><input type="radio" name="q2" value="correct"> February</label>
                         <label><input type="radio" name="q2" value="incorrect"> June</label>
                         <label><input type="radio" name="q2" value="incorrect"> October</label>
-                        <label><input type="radio" name="q2" value="correct"> February</label>
                     </div>
                 </div>
-
-                <!-- Question 3 -->
                 <div class="question">
                     <p>3. Which of these is a famous romantic tragedy by William Shakespeare?</p>
                     <div class="options">
@@ -105,18 +107,14 @@
                         <label><input type="radio" name="q3" value="incorrect"> A Midsummer Night’s Dream</label>
                     </div>
                 </div>
-
-                <!-- Question 4 -->
                 <div class="question">
                     <p>4. What is the Greek god of love called?</p>
                     <div class="options">
+                        <label><input type="radio" name="q4" value="correct"> Eros</label>
                         <label><input type="radio" name="q4" value="incorrect"> Zeus</label>
                         <label><input type="radio" name="q4" value="incorrect"> Poseidon</label>
-                        <label><input type="radio" name="q4" value="correct"> Eros</label>
                     </div>
                 </div>
-
-                <!-- Question 5 -->
                 <div class="question">
                     <p>5. Which color is most commonly linked to romance and passion?</p>
                     <div class="options">
@@ -125,31 +123,124 @@
                         <label><input type="radio" name="q5" value="incorrect"> Blue</label>
                     </div>
                 </div>
-
                 <button type="button" onclick="checkAnswers()">Submit Answers</button>
             </form>
             <div id="result"></div>
         </div>
+
+        <!-- Snake Game Section -->
+        <div class="game-section">
+            <h2>Snake Game</h2>
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <p>Use arrow keys to move the snake. Eat the red food to grow!</p>
+            <p>Score: <span id="score">0</span></p>
+        </div>
     </div>
 
     <script>
+        // Quiz Script
         function checkAnswers() {
             let score = 0;
             const totalQuestions = 5;
-
-            // Check each question
             if (document.querySelector('input[name="q1"]:checked')?.value === 'correct') score++;
             if (document.querySelector('input[name="q2"]:checked')?.value === 'correct') score++;
             if (document.querySelector('input[name="q3"]:checked')?.value === 'correct') score++;
             if (document.querySelector('input[name="q4"]:checked')?.value === 'correct') score++;
             if (document.querySelector('input[name="q5"]:checked')?.value === 'correct') score++;
-
-            // Display result
             const result = document.getElementById('result');
             result.textContent = `You got ${score} out of ${totalQuestions} correct!`;
         }
+
+        // Snake Game Script
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gridSize = 20;
+        const tileCount = canvas.width / gridSize;
+        let snake = [{ x: 10, y: 10 }];
+        let food = { x: 15, y: 15 };
+        let dx = 0;
+        let dy = 0;
+        let score = 0;
+
+        function drawGame() {
+            // Move snake
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            snake.unshift(head);
+
+            // Check if snake ate food
+            if (head.x === food.x && head.y === food.y) {
+                score += 1;
+                document.getElementById('score').textContent = score;
+                food = {
+                    x: Math.floor(Math.random() * tileCount),
+                    y: Math.floor(Math.random() * tileCount)
+                };
+            } else {
+                snake.pop();
+            }
+
+            // Check collision with walls
+            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+                resetGame();
+                return;
+            }
+
+            // Check collision with self
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    resetGame();
+                    return;
+                }
+            }
+
+            // Clear canvas
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw snake
+            ctx.fillStyle = 'green';
+            snake.forEach(segment => {
+                ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
+            });
+
+            // Draw food
+            ctx.fillStyle = 'red';
+            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+
+            // Continue game loop
+            setTimeout(drawGame, 100);
+        }
+
+        function resetGame() {
+            snake = [{ x: 10, y: 10 }];
+            dx = 0;
+            dy = 0;
+            score = 0;
+            document.getElementById('score').textContent = score;
+            food = { x: 15, y: 15 };
+            drawGame();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowUp':
+                    if (dy === 0) { dx = 0; dy = -1; }
+                    break;
+                case 'ArrowDown':
+                    if (dy === 0) { dx = 0; dy = 1; }
+                    break;
+                case 'ArrowLeft':
+                    if (dx === 0) { dx = -1; dy = 0; }
+                    break;
+                case 'ArrowRight':
+                    if (dx === 0) { dx = 1; dy = 0; }
+                    break;
+            }
+        });
+
+        // Start the game
+        drawGame();
     </script>
 </body>
 </html>
-
 
