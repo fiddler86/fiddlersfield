@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ember & Flame - Reignite the Romance</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Ember & Flame</h1>
+        <p>A tool to reignite your romantic spark</p>
+    </header>
+    <main>
+        <section id="daily-prompt">
+            <h2>Today’s Ember</h2>
+            <p id="prompt-text">Click below to fan the flame!</p>
+            <button id="prompt-btn">New Spark</button>
+        </section>
+        <section id="date-planner">
+            <h2>Flame a Date</h2>
+            <input type="text" id="partner-pref" placeholder="What lights up your partner?">
+            <button id="date-btn">Kindle an Idea</button>
+            <p id="date-idea"></p>
+        </section>
+        <section id="romance-quiz">
+            <h2>Glow of Romance Quiz</h2>
+            <p>How do you keep the fire alive?</p>
+            <form id="quiz-form">
+                <label><input type="radio" name="quiz" value="a"> A) Surprise gestures out of the blue</label><br>
+                <label><input type="radio" name="quiz" value="b"> B) Quiet, cozy nights together</label><br>
+                <label><input type="radio" name="quiz" value="c"> C) Big, planned adventures</label><br>
+                <label><input type="radio" name="quiz" value="d"> D) Deep talks over coffee or wine</label><br>
+                <button type="submit">See Your Spark</button>
+            </form>
+            <p id="quiz-result"></p>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
