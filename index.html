@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Website</title>
     <style>
-        /* Basic CSS styling */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -22,21 +21,135 @@
         h1 {
             color: #333;
         }
+        h2 {
+            color: #555;
+        }
+        .quiz-section {
+            margin-top: 20px;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .question p {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .options label {
+            display: block;
+            margin: 5px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to My Website</h1>
-        <p>I have taught myself HTML code in 1 day. This has enabled me to create this test page.</p>
-        
+        <p>This is my first website! Here's some information about it:</p>
+       
+        <h2>About Me</h2>
+        <p>Write something about yourself here.</p>
+       
         <h2>My Interests</h2>
         <ul>
-            <li>I Love My Wifey</li>
-            <li>To Fish Or Not To Fish</li>
-            <li>I like Ice-Cream</li>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
         </ul>
-        
-        <a href="https://www.w3schools.com/html/html_basic.asp">Visit w3 HTML for beginners</a>
+       
+        <a href="https://www.example.com">Visit Example.com</a>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section">
+            <h2>Romance Quiz</h2>
+            <form id="quizForm">
+                <!-- Question 1 -->
+                <div class="question">
+                    <p>1. What flower is traditionally associated with love and romance?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="correct"> Rose</label>
+                        <label><input type="radio" name="q1" value="incorrect"> Daffodil</label>
+                        <label><input type="radio" name="q1" value="incorrect"> Cactus</label>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question">
+                    <p>2. In what month is Valentine’s Day celebrated?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="correct"> February</label>
+                        <label><input type="radio" name="q2" value="incorrect"> June</label>
+                        <label><input type="radio" name="q2" value="incorrect"> October</label>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question">
+                    <p>3. Which of these is a famous romantic tragedy by William Shakespeare?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="correct"> Romeo and Juliet</label>
+                        <label><input type="radio" name="q3" value="incorrect"> Hamlet</label>
+                        <label><input type="radio" name="q3" value="incorrect"> A Midsummer Night’s Dream</label>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question">
+                    <p>4. What is the Greek god of love called?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="correct"> Eros</label>
+                        <label><input type="radio" name="q4" value="incorrect"> Zeus</label>
+                        <label><input type="radio" name="q4" value="incorrect"> Poseidon</label>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question">
+                    <p>5. Which color is most commonly linked to romance and passion?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="correct"> Red</label>
+                        <label><input type="radio" name="q5" value="incorrect"> Green</label>
+                        <label><input type="radio" name="q5" value="incorrect"> Blue</label>
+                    </div>
+                </div>
+
+                <button type="button" onclick="checkAnswers()">Submit Answers</button>
+            </form>
+            <div id="result"></div>
+        </div>
     </div>
+
+    <script>
+        function checkAnswers() {
+            let score = 0;
+            const totalQuestions = 5;
+
+            // Check each question
+            if (document.querySelector('input[name="q1"]:checked')?.value === 'correct') score++;
+            if (document.querySelector('input[name="q2"]:checked')?.value === 'correct') score++;
+            if (document.querySelector('input[name="q3"]:checked')?.value === 'correct') score++;
+            if (document.querySelector('input[name="q4"]:checked')?.value === 'correct') score++;
+            if (document.querySelector('input[name="q5"]:checked')?.value === 'correct') score++;
+
+            // Display result
+            const result = document.getElementById('result');
+            result.textContent = `You got ${score} out of ${totalQuestions} correct!`;
+        }
+    </script>
 </body>
 </html>
+
+
